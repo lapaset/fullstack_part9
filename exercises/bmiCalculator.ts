@@ -3,7 +3,7 @@ interface BmiValues {
   mass: number;
 }
 
-const calculateBmi = (h: number, m: number): string => {
+export const calculateBmi = (h: number, m: number): string => {
   const bmi = m / ((h / 100) * (h / 100));
   if (bmi <= 15)
     return 'Very severely underweight';

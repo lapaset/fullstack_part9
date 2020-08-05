@@ -3,7 +3,7 @@ interface ExerciseResult {
   trainingDays: number;
   success: boolean;
   rating: 1 | 2 | 3;
-  ratingDescription: 'this is not enough' | 'good job' | 'excellent';
+  ratingDescription: 'this is not enough' | 'good job' | 'excellent' | 'error';
   target: number;
   average: number;  
 }
@@ -38,6 +38,8 @@ const calculateExercises = (hours: Array<number>, target: number): ExerciseResul
         return 'good job';
       case 1:
         return 'this is not enough';
+      default:
+        return 'error';
     }
   }
   
