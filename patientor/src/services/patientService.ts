@@ -1,9 +1,9 @@
-import patientData from '../../data/patients.json';
+import patients from '../../data/patients';
 import { SecurePatient, NewPatient } from '../types';
 import { v4 as uuid } from 'uuid';
 
 const getSecureEntries = (): SecurePatient[] => {
-  return patientData
+  return patients
     .map(({ id, name, dateOfBirth, gender, occupation }) => ({
       id,
       name,
@@ -20,7 +20,7 @@ const addPatient = ( patient: NewPatient ): SecurePatient => {
       ...patient
     };
 
-    patientData.push(newPatient);
+    patients.push(newPatient);
     return {
       id: newPatient.id,
       name: newPatient.name,
