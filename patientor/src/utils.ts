@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NewPatient, Gender } from './types';
+import { NewPatient, Gender, Entry, EntryType } from './types';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const toNewPatient = (object: any): NewPatient => {
@@ -16,6 +16,10 @@ const toNewPatient = (object: any): NewPatient => {
 
   const isGender = (gender: any): gender is Gender => {
     return Object.values(Gender).includes(gender);
+  };
+
+  const isEntryType = (entryType: any): entryType is EntryType => {
+    return Object.values(EntryType).includes(entryType);
   };
 
   const parseName = (name: any): string => {
@@ -48,13 +52,26 @@ const toNewPatient = (object: any): NewPatient => {
     return ssn;
   };
 
+  const correctTypes = (entries: any[]): boolean => {
+    return entries.find(e => !isEntryType(e.type)) === undefined;
+  };
+
+  const parseEntries = (entries: any): Entry[] => {
+    if (entries && entries !== undefined && Array.isArray(entries) && !correctTypes(entries))
+      throw new Error('Incorrect entries: ' + entries);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return entries
+      ? entries
+      : [];
+  };
+
   return {
     name: parseName(object.name),
     dateOfBirth: parseDateOfBirth(object.dateOfBirth),
     ssn: parseSsn(object.ssn),
     gender: parseGender(object.gender),
     occupation: parseOccupation(object.occupation),
-    entries: []
+    entries: parseEntries(object.entries)
   };
 };
 
