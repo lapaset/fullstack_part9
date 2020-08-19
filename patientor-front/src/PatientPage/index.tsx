@@ -10,16 +10,21 @@ interface EntryProps {
   entry: Entry;
 }
 
-const EntryText: React.FC<EntryProps> = ({ entry }) => (
+const EntryText: React.FC<EntryProps> = ({ entry }) => {
+  const [{ diagnoses }] = useStateValue();
+
+  return (
   <div>
     <p>{entry.date} <i>{entry.description}</i></p>
     {entry.diagnosisCodes
       ? <ul>
-          {entry.diagnosisCodes.map(d => <li key={d}>{d}</li>)}
+          {entry.diagnosisCodes.map(d => <li key={d}>
+                                            {d} {diagnoses[d].name}
+                                          </li>)}
         </ul>
       : null }
   </div>
-)
+)}
 
 const PatientPage: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
@@ -60,7 +65,9 @@ const PatientPage: React.FC = () => {
           occupation: {patient.occupation ? patient.occupation : 'loading...'}
           <h3>entries</h3>
           {patient.entries
-                ? patient.entries.map(e => <EntryText key={e.id} entry={e} />)
+                ? patient.entries.map(e => <EntryText
+                                              key={e.id}
+                                              entry={e} />)
                 : 'loading...' }
         </Container>
       </div>
