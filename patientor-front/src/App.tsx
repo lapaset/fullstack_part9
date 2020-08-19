@@ -30,13 +30,13 @@ const App: React.FC = () => {
       try {
         const { data: diagnosisListFromApi } = await axios.get<Diagnosis[]>(
           `${apiBaseUrl}/diagnoses`
-        )
+        );
         console.log(diagnosisListFromApi);
         dispatch(setDiagnosisList(diagnosisListFromApi));
       } catch (e) {
         console.error(e);
       }
-    }
+    };
     fetchPatientList();
     fetchDiagnosisList();
   }, [dispatch]);

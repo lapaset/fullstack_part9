@@ -24,7 +24,7 @@ const EntryText: React.FC<EntryProps> = ({ entry }) => {
         </ul>
       : null }
   </div>
-)}
+);};
 
 const PatientPage: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
