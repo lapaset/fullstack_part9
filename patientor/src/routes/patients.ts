@@ -1,8 +1,19 @@
 import express from 'express';
 import patientService from '../services/patientService';
-import toNewPatient from '../utils';
+import { toNewPatient, toNewEntry } from '../utils';
 
 const router = express.Router();
+
+router.post('/:id/entries', (req, res) => {
+  try {
+    const newEntry = toNewEntry(req.body);
+    const patient = patientService.addEntry(req.params.id, newEntry);
+    res.json(patient);
+  } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    res.status(400).send(e.message);
+  }
+});
 
 router.get('/:id', (req, res) => {
   const patient = patientService.findPatientById(req.params.id);
@@ -13,7 +24,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/', (_req, res) => {
-  res.send(patientService.getSecureEntries());
+  res.send(patientService.getSecurePatients());
 });
 
 router.post('/', (req, res) => {
