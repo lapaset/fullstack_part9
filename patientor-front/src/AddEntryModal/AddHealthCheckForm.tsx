@@ -1,18 +1,16 @@
 import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Formik, Form, Field } from "formik";
-import { HealthCheckEntry } from "../types";
-import { TextField, DiagnosisSelection, NumberField } from "../AddPatientModal/FormField"
+import { HealthcheckFormValues } from "../types";
+import { TextField, DiagnosisSelection, NumberField } from "../AddPatientModal/FormField";
 import { useStateValue } from "../state";
-
-export type HealthcheckFormValues = Omit<HealthCheckEntry, "id">;
 
 interface Props {
   onSubmit: (values: HealthcheckFormValues) => void;
   onCancel: () => void;
 }
 
-export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
+export const AddHealthCheckForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
   const [{ diagnoses }] = useStateValue();
   
   return (
@@ -91,16 +89,10 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
               </Grid.Column>
             </Grid>
           </Form>
-        )
+        );
       }}
     </Formik>
-  )
-}
+  );
+};
 
-export default AddEntryForm;
-/*type: "HealthCheck",
-        description: parseDescription(object.description),
-        date: parseDate(object.date),
-        specialist: parseSpecialist(object.specialist),
-        diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes),
-        healthCheckRating: parseHealthCheckRating(object.healthCheckRating)*/
+export default AddHealthCheckForm;

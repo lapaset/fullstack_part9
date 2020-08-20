@@ -4,10 +4,9 @@ import { useParams } from 'react-router-dom';
 import { Container, Icon, List, Button, Segment } from 'semantic-ui-react';
 import { useStateValue } from '../state';
 import { apiBaseUrl } from '../constants';
-import { Patient, Gender } from '../types';
+import { Patient, Gender, EntryFormValues } from '../types';
 import EntryItem from './EntryItem';
 import AddEntryModal from '../AddEntryModal';
-import { HealthcheckFormValues } from '../AddEntryModal/AddEntryForm';
 
 const PatientPage: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
@@ -24,21 +23,6 @@ const PatientPage: React.FC = () => {
     setError(undefined);
   };
 
-  const submitNewEntry = async (values: HealthcheckFormValues) => {
-    console.log('submit', values);
-    try {
-      await axios.post<Patient>(
-        `${apiBaseUrl}/patients/${id}/entries`,
-        values
-      );
-      findPatient(id)
-      closeModal();
-    } catch (e) {
-      console.error(e.response.data);
-      setError(e.response.data.error);
-    }
-  };
-
   const findPatient = async (id: string) => {
     try {
       const { data: patient } = await axios.get<Patient>(
@@ -48,6 +32,21 @@ const PatientPage: React.FC = () => {
       dispatch({ type: "SET_PATIENT", payload: patient });
     } catch (e) {
       console.error(e);
+    }
+  };
+
+  const submitNewEntry = async (values: EntryFormValues) => {
+    console.log('submit', values);
+    try {
+      await axios.post<Patient>(
+        `${apiBaseUrl}/patients/${id}/entries`,
+        values
+      );
+      findPatient(id);
+      closeModal();
+    } catch (e) {
+      console.error(e.response.data);
+      setError(e.response.data.error);
     }
   };
 
@@ -74,9 +73,7 @@ const PatientPage: React.FC = () => {
             occupation: {patient.occupation ? patient.occupation : 'loading...'}
           </div>
           
-
           <h3>Entries</h3>
-
           <AddEntryModal
             modalOpen={modalOpen}
             onSubmit={submitNewEntry}
