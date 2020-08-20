@@ -96,9 +96,12 @@ export const toNewEntry = (object: any): NewEntry => {
   };
 
   const parseHealthCheckRating = (rating: any): HealthCheckRating => {
-    if (!rating || !isHealthCheckRating(rating))
+    if (rating === 0)
+      return 0;
+    if (!rating || isNaN(parseInt(rating)) || !isHealthCheckRating(Number(rating))) {
       throw new Error('Incorrect or missing health check rating: ' + rating);
-    return rating;
+    }
+    return Number(rating);
   };
 
   //if time check that the string really is diagnosis code
@@ -168,41 +171,3 @@ export const toNewEntry = (object: any): NewEntry => {
 };
 
 export default toNewPatient;
-
-
- /*interface BaseEntry {
-  id: string;
-  description: string;
-  date: string;
-  specialist: string;
-  diagnosisCodes?: Array<Diagnosis['code']>;
-}
-
-export enum HealthCheckRating {
-  "Healthy" = 0,
-  "LowRisk" = 1,
-  "HighRisk" = 2,
-  "CriticalRisk" = 3
-}
-
-interface HealthCheckEntry extends BaseEntry {
-  type: "HealthCheck",
-  healthCheckRating: HealthCheckRating;
-}
-
-interface HospitalEntry extends BaseEntry {
-  type: "Hospital",
-  discharge: {
-    date: string,
-    criteria: string
-  }
-}
-
-interface OccupationalHealthcareEntry extends BaseEntry {
-  type: "OccupationalHealthcare",
-  employerName: string,
-  sickLeave?: {
-    startDate: string,
-    endDate: string
-  }
-} */
