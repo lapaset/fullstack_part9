@@ -35,8 +35,9 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
           errors.date = requiredError;
         if (!values.specialist)
           errors.specialist = requiredError;
-        if (!values.healthCheckRating)
+        if (values.healthCheckRating !== 0 && !values.healthCheckRating)
           errors.healthCheckRating = requiredError;
+        return errors;
       }}
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
