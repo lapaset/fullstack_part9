@@ -59,10 +59,12 @@ export enum EntryType {
 }
 
 export type HospitalFormValues = Omit<HospitalEntry, "id">;
+export type OccupationalHcFormValues = Omit<OccupationalHealthcareEntry, "id">;
 export type HealthcheckFormValues = Omit<HealthCheckEntry, "id">;
 
 export type EntryFormValues =
   | HospitalFormValues
+  | OccupationalHcFormValues
   | HealthcheckFormValues;
 
 export interface Patient {

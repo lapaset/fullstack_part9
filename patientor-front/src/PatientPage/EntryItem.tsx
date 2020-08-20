@@ -7,12 +7,15 @@ const DiagnosisList: React.FC<{ entry: Entry }> = ({ entry }) => {
   const [{ diagnoses }] = useStateValue();
   
   return entry.diagnosisCodes
-            ? <ul>
-                {entry.diagnosisCodes
-                  .map(d => <li key={d}>
+            ? <div>
+                diagnoses:
+                <ul>
+                  {entry.diagnosisCodes
+                    .map(d => <li key={d}>
                                 {d} {diagnoses[d].name}
-                            </li>)}
-              </ul>
+                              </li>)}
+                </ul>
+              </div>
             : null;
 };
 
@@ -44,8 +47,8 @@ const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
     case "OccupationalHealthcare":
       return <div>
                 {entry.sickLeave
-                  ? `sick leave: ${entry.sickLeave.startDate} - ${entry.sickLeave.endDate}`
-                  : null } <br/>
+                  ? <div>sick leave: {entry.sickLeave.startDate} - {entry.sickLeave.endDate}</div>
+                  : null }
                 employer: {entry.employerName}
               </div>;
     case "HealthCheck":

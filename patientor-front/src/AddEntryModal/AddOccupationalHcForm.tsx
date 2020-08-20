@@ -1,29 +1,29 @@
 import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Formik, Form, Field } from "formik";
-import { HealthcheckFormValues } from "../types";
-import { TextField, DiagnosisSelection, NumberField } from "../AddPatientModal/FormField";
+import { OccupationalHcFormValues } from "../types";
+import { TextField, DiagnosisSelection } from "../AddPatientModal/FormField";
 import { useStateValue } from "../state";
 
 interface Props {
-  onSubmit: (values: HealthcheckFormValues) => void;
+  onSubmit: (values: OccupationalHcFormValues) => void;
   onCancel: () => void;
 }
 
-export const AddHealthCheckForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
+export const AddOccupationalHcForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
   const [{ diagnoses }] = useStateValue();
   
   return (
     <div>
-      <h3>type: health check</h3>
+      <h3>type: occupational healthcare</h3>
       <Formik
         initialValues={{
-          type: "HealthCheck",
+          type: "OccupationalHealthcare",
           description: "",
           date: "",
           specialist: "",
           diagnosisCodes: undefined,
-          healthCheckRating: 0
+          employerName: ""
         }}
         onSubmit={onSubmit}
         validate={values => {
@@ -35,8 +35,8 @@ export const AddHealthCheckForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
             errors.date = requiredError;
           if (!values.specialist)
             errors.specialist = requiredError;
-          if (values.healthCheckRating !== 0 && !values.healthCheckRating)
-            errors.healthCheckRating = requiredError;
+          if (!values.employerName)
+            errors.employerName = requiredError;
           return errors;
         }}
       >
@@ -66,12 +66,11 @@ export const AddHealthCheckForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
                 setFieldTouched={setFieldTouched}
                 diagnoses={Object.values(diagnoses)}
               />
-              <Field
-                label="healthCheckRating"
-                name="healthCheckRating"
-                component={NumberField}
-                min={0}
-                max={3}
+              <Field 
+                label="Employer Name"
+                placeholder="Employer Name"
+                name="employerName"
+                component={TextField}
               />
               <Grid>
                 <Grid.Column floated="left" width={5}>
@@ -98,4 +97,4 @@ export const AddHealthCheckForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
   );
 };
 
-export default AddHealthCheckForm;
+export default AddOccupationalHcForm;

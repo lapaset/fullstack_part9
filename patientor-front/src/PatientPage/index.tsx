@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { Container, Icon, List, Button, Segment } from 'semantic-ui-react';
 import { useStateValue } from '../state';
 import { apiBaseUrl } from '../constants';
@@ -9,6 +9,7 @@ import EntryItem from './EntryItem';
 import AddEntryModal from '../AddEntryModal';
 
 const PatientPage: React.FC = () => {
+  const history = useHistory();
   const [{ patients }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
   const patient = Object.values(patients).find(p => p.id === id);
@@ -21,6 +22,7 @@ const PatientPage: React.FC = () => {
   const closeModal = (): void => {
     setModalOpen(false);
     setError(undefined);
+    history.push(id);
   };
 
   const findPatient = async (id: string) => {
@@ -36,7 +38,6 @@ const PatientPage: React.FC = () => {
   };
 
   const submitNewEntry = async (values: EntryFormValues) => {
-    console.log('submit', values);
     try {
       await axios.post<Patient>(
         `${apiBaseUrl}/patients/${id}/entries`,
